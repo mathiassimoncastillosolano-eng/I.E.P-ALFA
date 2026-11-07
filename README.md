@@ -1,16 +1,15 @@
-# I.E.P. ALFA — Sistema de Gestión Escolar
+# I.E.P. ALFA · Sistema de Gestión Escolar (frontend con datos Mock)
 
-Frontend con datos mock (React + Vite + TypeScript + Tailwind). Sin backend: todo pasa por `src/services`, que simula una API sobre `src/mocks/db.ts` (localStorage, clave `iepalfa:v1`).
+React + Vite + TypeScript + Tailwind v4 · Zustand · React Hook Form + Zod · TanStack Table v8 · Recharts · Motion · Radix · Sonner.
+Sin backend: `src/services/*` simulan una API REST (promesas con latencia) sobre `localStorage`. Reemplazar cada servicio por HTTP no exige tocar la UI.
 
-## Uso
-1. `npm install`
-2. `npm run dev` · `npm run build` · `npm test`
-3. Botón "Restablecer demo" (arriba a la derecha) vuelve al seed.
+## Ejecutar
+npm install && npm run dev      (build: npm run build)
 
-## Módulos incluidos
-Dashboard · Estudiantes (registro, búsqueda, filtro, paginación) · Matrículas (genera matrícula + 10 mensualidades, retiro/anulación) ·
-Pagos y estado de cuenta (parcial/total, reversión) · Deudas · Auditoría.
+## Escudo institucional (PENDIENTE)
+Copie el archivo original a `public/logos/escudo-alfa.png`. Hasta entonces se muestra un recuadro "IEP" provisional (no es una recreación del escudo).
 
-## Pendientes (siguientes etapas con Claude Code)
-Reportes, usuarios/roles, configuración económica/académica por año, perfil de estudiante, exportación PDF/Excel, edición de estudiantes,
-formularios con Zod/React Hook Form, componentes con Radix, animaciones y refinamiento responsive. Ver `docs/ARQUITECTURA.md`.
+## Notas
+- Fecha simulada del sistema: 07-nov-2026 (`src/constants`), contra la que se derivan vencidas/programadas.
+- Restablecer datos: menú de perfil o Administración → Configuración.
+- Cambiar de usuario (rol) desde el menú de perfil para ver permisos.

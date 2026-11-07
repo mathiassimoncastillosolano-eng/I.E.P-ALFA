@@ -1,10 +1,9 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+import path from 'node:path'
+import { defineConfig } from 'vite'
 
-// Alias "@" -> /src (ruta desde la raíz del proyecto). No usa módulos de Node,
-// así `tsc -b` no necesita @types/node.
 export default defineConfig({
-  plugins: [react()],
-  resolve: { alias: { '@': '/src' } },
-  test: { environment: 'node', include: ['src/**/*.test.ts'] },
-});
+  plugins: [react(), tailwindcss()],
+  resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
+})

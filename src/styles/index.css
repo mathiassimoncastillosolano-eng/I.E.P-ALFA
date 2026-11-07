@@ -1,6 +1,164 @@
-@import './tokens.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+@import 'tailwindcss';
 
-body { @apply bg-app text-brand-900 font-sans antialiased; }
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== Tokens institucionales I.E.P. ALFA ===== */
+:root {
+  --brand-blue: #173d91;
+  --brand-cyan: #168ac4;
+  --brand-red: #d92735;
+  --brand-ink: #172b4d;
+  --brand-mist: #f4f6fa;
+
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --surface-2: #f8f9fc;
+  --surface-3: #eef1f7;
+  --border: #e2e7f0;
+  --border-strong: #cfd7e6;
+  --text: #172b4d;
+  --text-2: #4a5a78;
+  --muted: #7a889f;
+  --primary: #173d91;
+  --primary-hover: #123175;
+  --primary-soft: #e8eefb;
+  --primary-fg: #ffffff;
+  --accent: #168ac4;
+  --accent-soft: #e2f3fb;
+  --danger: #d92735;
+  --danger-soft: #fdebed;
+  --success: #138a5b;
+  --success-soft: #e3f6ee;
+  --warning: #b86e00;
+  --warning-soft: #fff3dc;
+  --ring: rgba(23, 61, 145, 0.35);
+  --shadow-sm: 0 1px 2px rgba(23, 43, 77, 0.05);
+  --shadow-md: 0 4px 14px -2px rgba(23, 43, 77, 0.08), 0 2px 4px rgba(23, 43, 77, 0.04);
+  --shadow-lg: 0 18px 40px -12px rgba(23, 43, 77, 0.22), 0 4px 10px rgba(23, 43, 77, 0.06);
+  --sidebar-bg: #0f2760;
+  --sidebar-fg: #c9d5f2;
+  --sidebar-muted: #7f93c4;
+  --sidebar-active: rgba(255, 255, 255, 0.1);
+  --chart-1: #173d91;
+  --chart-2: #168ac4;
+  --chart-3: #d92735;
+  --chart-4: #7aa2e8;
+  --chart-5: #94a3bd;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0b1226;
+  --surface: #111a33;
+  --surface-2: #15203f;
+  --surface-3: #1b284d;
+  --border: #243256;
+  --border-strong: #31426e;
+  --text: #e8edf9;
+  --text-2: #b4c0dc;
+  --muted: #8091b4;
+  --primary: #5b8def;
+  --primary-soft: #1a2b57;
+  --primary-fg: #08122b;
+  --accent: #3fb0e6;
+  --accent-soft: #123049;
+  --danger: #ff6b78;
+  --danger-soft: #3a1820;
+  --success: #3ccf93;
+  --success-soft: #0f3326;
+  --warning: #f2b04a;
+  --warning-soft: #3a2a0c;
+  --ring: rgba(91, 141, 239, 0.45);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 18px -4px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.65);
+  --sidebar-bg: #0a1130;
+  --sidebar-fg: #b9c6e6;
+  --sidebar-muted: #6b7da8;
+  --sidebar-active: rgba(91, 141, 239, 0.16);
+  --chart-1: #5b8def;
+  --chart-2: #3fb0e6;
+  --chart-3: #ff6b78;
+  --chart-4: #a3bff2;
+  --chart-5: #6c7c9e;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-fg: var(--primary-fg);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-sidebar: var(--sidebar-bg);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --shadow-soft: var(--shadow-sm);
+  --shadow-card: var(--shadow-md);
+  --shadow-pop: var(--shadow-lg);
+}
+
+html { font-feature-settings: 'cv11', 'ss01'; -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+* { border-color: var(--border); }
+::selection { background: var(--primary-soft); color: var(--primary); }
+
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
+
+/* Scrollbars estilizadas */
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); background-clip: content-box; border: 2px solid transparent; }
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Skeleton shimmer */
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skeleton { position: relative; overflow: hidden; background: var(--surface-3); border-radius: 8px; }
+.skeleton::after {
+  content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface) 70%, transparent), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+/* Patrón sutil institucional para superficies hero */
+.hero-surface {
+  background:
+    radial-gradient(900px 300px at 85% -20%, rgba(22, 138, 196, 0.35), transparent 60%),
+    radial-gradient(600px 260px at 0% 120%, rgba(217, 39, 53, 0.22), transparent 60%),
+    linear-gradient(135deg, #173d91 0%, #0f2760 100%);
+}
+
+@media print {
+  aside, header, .no-print { display: none !important; }
+  body { background: #fff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

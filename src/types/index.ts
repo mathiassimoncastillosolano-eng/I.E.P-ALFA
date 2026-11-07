@@ -1,148 +1,242 @@
-export type ID = string;
-export type ISODate = string; // 'YYYY-MM-DD'
-export type ISODateTime = string;
-export type Centimos = number; // S/ 150.00 = 15000
+export type LevelId = 'primaria' | 'secundaria'
+export type Sex = 'M' | 'F'
+export type StudentStatus = 'activo' | 'inactivo' | 'retirado'
+export type EnrollmentStatus = 'pendiente' | 'matriculado' | 'retirado' | 'anulado' | 'finalizado'
+export type YearStatus = 'planificado' | 'activo' | 'cerrado'
+export type SectionStatus = 'abierta' | 'cerrada'
+export type ObligationConcept = 'matricula' | 'mensualidad'
+export type ObligationStatus = 'programada' | 'pendiente' | 'parcial' | 'vencida' | 'pagada' | 'anulada'
+export type PaymentMethod = 'efectivo' | 'transferencia' | 'yape' | 'plin' | 'otros'
+export type PaymentStatus = 'confirmado' | 'anulado'
+export type RoleId = 'administrador' | 'direccion' | 'secretaria' | 'tesoreria'
+export type AuditModule =
+  | 'estudiantes' | 'matriculas' | 'academico' | 'pagos' | 'economico' | 'usuarios' | 'configuracion' | 'sistema'
+export type AuditAction = 'crear' | 'editar' | 'retirar' | 'anular' | 'reversar' | 'finalizar' | 'configurar' | 'restablecer'
 
-export type NivelId = 'PRIMARIA' | 'SECUNDARIA';
+export interface Level { id: LevelId; name: string }
+export interface Grade { id: string; levelId: LevelId; name: string; short: string; order: number }
 
-export interface ConfigEconomica {
-  importeMatricula: Centimos;
-  importeMensualidad: Centimos;
-  numeroCuotas: number;
-  mesInicio: number; // 3 = marzo
-  diaVencimiento: number; // 1..28
+export interface EconomicConfig {
+  matriculaAmount: number
+  mensualidadAmount: number
+  installments: number
+  startMonth: number // 1-12
+  dueDay: number
+  matriculaDueDate: string // ISO yyyy-MM-dd
+  defaultDiscountPct: number
 }
 
-export interface AnioAcademico {
-  id: ID;
-  nombre: string;
-  fechaInicio: ISODate;
-  fechaFin: ISODate;
-  estado: 'PLANIFICADO' | 'ACTIVO' | 'CERRADO';
-  configEconomica: ConfigEconomica;
+export interface AcademicYear {
+  id: string
+  year: number
+  status: YearStatus
+  startDate: string
+  endDate: string
+  config: EconomicConfig
 }
 
-export interface Grado {
-  id: ID;
-  nivel: NivelId;
-  orden: number;
-  nombre: string;
+export interface Section {
+  id: string
+  yearId: string
+  gradeId: string
+  name: string
+  capacity: number
+  status: SectionStatus
 }
 
-export interface Seccion {
-  id: ID;
-  anioId: ID;
-  gradoId: ID;
-  nombre: string;
-  capacidad: number;
-  estado: 'ABIERTA' | 'CERRADA';
+export interface Guardian {
+  id: string
+  dni: string
+  names: string
+  surnames: string
+  relationship: string
+  phone: string
+  email: string
+  address: string
 }
 
-export interface Apoderado {
-  id: ID;
-  dni: string;
-  nombres: string;
-  apellidos: string;
-  parentesco: string;
-  telefono: string;
-  email?: string;
-  direccion?: string;
+export interface Student {
+  id: string
+  code: string
+  dni: string
+  names: string
+  paternalSurname: string
+  maternalSurname: string
+  birthDate: string
+  sex: Sex
+  address: string
+  phone: string
+  email: string
+  photo?: string
+  status: StudentStatus
+  guardianId: string
+  notes: string
+  createdAt: string
 }
 
-export interface Estudiante {
-  id: ID;
-  codigo: string;
-  dni: string;
-  nombres: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  fechaNacimiento: ISODate;
-  sexo: 'M' | 'F';
-  direccion: string;
-  telefono?: string;
-  email?: string;
-  fotoUrl?: string;
-  apoderadoPrincipalId: ID;
-  apoderadosIds: ID[];
-  observaciones?: string;
-  estado: 'ACTIVO' | 'INACTIVO' | 'RETIRADO';
+export interface EnrollmentEvent { at: string; status: EnrollmentStatus; note: string; userId: string }
+
+export interface Enrollment {
+  id: string
+  code: string
+  studentId: string
+  yearId: string
+  gradeId: string
+  sectionId: string
+  status: EnrollmentStatus
+  enrolledAt: string
+  matriculaAmount: number
+  mensualidadAmount: number
+  installments: number
+  discountPct: number
+  conditions: string
+  events: EnrollmentEvent[]
 }
 
-export type EstadoMatricula = 'PENDIENTE' | 'MATRICULADO' | 'RETIRADO' | 'ANULADO' | 'FINALIZADO';
-
-export interface CondicionEconomica {
-  descuentoMatriculaPct: number;
-  descuentoMensualidadPct: number;
-  exoneradoMatricula: boolean;
-  notas?: string;
+export interface Obligation {
+  id: string
+  enrollmentId: string
+  studentId: string
+  yearId: string
+  concept: ObligationConcept
+  period: string // 'matricula' | yyyy-MM
+  label: string
+  amount: number
+  dueDate: string
+  annulled: boolean
 }
 
-export interface Matricula {
-  id: ID;
-  estudianteId: ID;
-  anioId: ID;
-  seccionId: ID;
-  estado: EstadoMatricula;
-  fechaMatricula: ISODate;
-  condicionEconomica: CondicionEconomica;
-  motivoCambioEstado?: string;
-  fechaCambioEstado?: ISODate;
+export interface Payment {
+  id: string
+  code: string
+  studentId: string
+  enrollmentId: string
+  date: string
+  method: PaymentMethod
+  operationNumber: string
+  total: number
+  notes: string
+  status: PaymentStatus
+  userId: string
+  voidReason?: string
+  voidedAt?: string
+  voidedBy?: string
 }
 
-export type ConceptoEconomico = 'MATRICULA' | 'MENSUALIDAD';
+export interface PaymentDetail { id: string; paymentId: string; obligationId: string; amount: number }
 
-export interface Obligacion {
-  id: ID;
-  matriculaId: ID;
-  concepto: ConceptoEconomico;
-  periodo: string;
-  importeOriginal: Centimos;
-  fechaVencimiento: ISODate;
-  anulada: boolean;
+export interface AuditEvent {
+  id: string
+  at: string // ISO datetime
+  userId: string
+  userName: string
+  action: AuditAction
+  module: AuditModule
+  description: string
+  entity: string
 }
 
-export type MetodoPago = 'EFECTIVO' | 'TRANSFERENCIA' | 'YAPE' | 'PLIN' | 'OTRO';
-
-export interface Pago {
-  id: ID;
-  numeroComprobante: string;
-  estudianteId: ID;
-  fechaPago: ISODate;
-  metodo: MetodoPago;
-  numeroOperacion?: string;
-  observaciones?: string;
-  total: Centimos;
-  estado: 'CONFIRMADO' | 'REVERTIDO';
-  motivoReversion?: string;
-  fechaReversion?: ISODate;
+export interface User {
+  id: string
+  name: string
+  email: string
+  role: RoleId
+  active: boolean
+  lastAccess: string
 }
 
-export interface DetallePago {
-  id: ID;
-  pagoId: ID;
-  obligacionId: ID;
-  importe: Centimos;
+export interface Institution {
+  name: string
+  shortName: string
+  ugel: string
+  address: string
+  phone: string
+  email: string
+  director: string
+  currency: string
 }
 
-export type RolId = 'ADMINISTRADOR' | 'DIRECCION' | 'SECRETARIA' | 'TESORERIA';
-
-export interface Usuario {
-  id: ID;
-  nombre: string;
-  email: string;
-  rol: RolId;
-  activo: boolean;
+export interface Database {
+  version: number
+  academicYears: AcademicYear[]
+  grades: Grade[]
+  sections: Section[]
+  guardians: Guardian[]
+  students: Student[]
+  enrollments: Enrollment[]
+  obligations: Obligation[]
+  payments: Payment[]
+  paymentDetails: PaymentDetail[]
+  audit: AuditEvent[]
+  users: User[]
+  institution: Institution
+  currentUserId: string
+  counters: Record<string, number>
 }
 
-export interface EventoAuditoria {
-  id: ID;
-  usuarioId: ID;
-  fechaHora: ISODateTime;
-  accion: 'CREAR' | 'EDITAR' | 'MATRICULAR' | 'RETIRAR' | 'ANULAR' | 'PAGAR' | 'REVERTIR_PAGO' | 'CONFIG_ECONOMICA';
-  modulo: string;
-  entidad: string;
-  entidadId: ID;
-  descripcion: string;
+/* ---------- Vistas derivadas ---------- */
+export interface ObligationView extends Obligation {
+  paid: number
+  balance: number
+  status: ObligationStatus
+  overdue: boolean
+  daysOverdue: number
 }
 
-export type EstadoObligacion = 'ANULADA' | 'PAGADA' | 'PARCIAL' | 'VENCIDA' | 'PROGRAMADA' | 'PENDIENTE';
+export interface StudentRow extends Student {
+  fullName: string
+  guardianName: string
+  guardianPhone: string
+  gradeName: string | null
+  levelId: LevelId | null
+  sectionName: string | null
+  gradeId: string | null
+  sectionId: string | null
+  enrollmentStatus: EnrollmentStatus | null
+  debt: number
+}
+
+export interface EnrollmentRow extends Enrollment {
+  studentName: string
+  studentDni: string
+  studentCode: string
+  year: number
+  gradeName: string
+  levelId: LevelId
+  sectionName: string
+  total: number
+  paid: number
+  balance: number
+}
+
+export interface AccountSummary {
+  total: number
+  paid: number
+  pending: number
+  overdue: number
+  upcoming: ObligationView[]
+}
+
+export interface DebtRow extends ObligationView {
+  studentName: string
+  studentDni: string
+  gradeName: string
+  sectionName: string
+  levelId: LevelId
+  year: number
+}
+
+export interface PaymentRow extends Payment {
+  studentName: string
+  studentDni: string
+  year: number
+  gradeName: string
+  details: (PaymentDetail & { label: string })[]
+}
+
+export interface PermissionSet {
+  can: (perm: Permission) => boolean
+}
+export type Permission =
+  | 'students.write' | 'enrollments.write' | 'enrollments.cancel' | 'payments.write' | 'payments.void'
+  | 'academic.write' | 'settings.write' | 'users.write' | 'audit.read' | 'reports.read' | 'finance.read'
