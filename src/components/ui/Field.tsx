@@ -1,62 +1,64 @@
-import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react'
-import { AlertCircle, ChevronDown, Search, X } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { forwardRef, useId, useState, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from 'react'
+import { AlertCircle, Eye, EyeOff, Search, X } from 'lucide-react'
 import { cx } from '@/utils/cn'
+import { FieldShell, fieldBase, fieldBorder } from './FieldShell'
 
-const base = 'w-full rounded-[10px] border bg-surface px-3 text-sm text-ink placeholder:text-muted transition-all duration-150 focus:outline-none focus:ring-4 focus:ring-primary/15 focus:border-primary disabled:cursor-not-allowed disabled:bg-surface-3 disabled:opacity-70'
+export { FieldShell, fieldBase, fieldBorder } from './FieldShell'
+export { Select, MultiSelect } from './Select'
+export type { SelectOption } from './Select'
+export { DateField, Calendar } from './DatePicker'
 
-export function FieldShell({ label, error, hint, required, children, className, htmlFor }: { label?: string; error?: string; hint?: string; required?: boolean; children: ReactNode; className?: string; htmlFor?: string }) {
-  return (
-    <div className={cx('flex flex-col gap-1.5', className)}>
-      {label && <label htmlFor={htmlFor} className="text-[13px] font-medium text-ink-2">{label}{required && <span className="ml-0.5 text-danger">*</span>}</label>}
-      {children}
-      <AnimatePresence initial={false} mode="wait">
-        {error ? (
-          <motion.p key="e" initial={{ opacity: 0, y: -4, height: 0 }} animate={{ opacity: 1, y: 0, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="flex items-center gap-1 text-xs text-danger" role="alert">
-            <AlertCircle className="size-3.5" />{error}
-          </motion.p>
-        ) : hint ? <p className="text-xs text-muted">{hint}</p> : null}
-      </AnimatePresence>
-    </div>
-  )
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string; error?: string; hint?: string
+  /** Icono a la izquierda. */
+  leading?: ReactNode
+  /** Elemento a la derecha (botón de acción, unidad, etc.). */
+  trailing?: ReactNode
+  /** Prefijo textual, p. ej. "S/". */
+  prefixText?: string
+  suffixText?: string
+  /** Muestra el contador de caracteres (requiere `maxLength` y `value` controlado). */
+  showCount?: boolean
+  inputClassName?: string
 }
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> { label?: string; error?: string; hint?: string; leading?: ReactNode }
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ label, error, hint, leading, className, required, id, ...rest }, ref) {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ label, error, hint, leading, trailing, prefixText, suffixText, showCount, className, inputClassName, required, id, type, ...rest }, ref) {
   const uid = useId(); const iid = id ?? uid
+  const [reveal, setReveal] = useState(false)
+  const isPassword = type === 'password'
+  const count = showCount && rest.maxLength && typeof rest.value === 'string' ? `${rest.value.length}/${rest.maxLength}` : null
+  const hasRight = isPassword || !!trailing || !!suffixText || !!error
   return (
     <FieldShell label={label} error={error} hint={hint} required={required} htmlFor={iid} className={className}>
       <div className="relative">
         {leading && <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted [&>svg]:size-4">{leading}</span>}
-        <input ref={ref} id={iid} aria-invalid={!!error} className={cx(base, 'h-10', leading && 'pl-9', error ? 'border-danger focus:border-danger focus:ring-danger/15' : 'border-line-strong')} {...rest} />
+        {prefixText && <span className={cx('pointer-events-none absolute inset-y-0 flex items-center text-sm font-medium text-muted', leading ? 'left-9' : 'left-3')}>{prefixText}</span>}
+        <input ref={ref} id={iid} type={isPassword && reveal ? 'text' : type} aria-invalid={!!error || undefined} aria-required={required || undefined}
+          className={cx(fieldBase, 'h-10 px-3', leading && 'pl-9', prefixText && (leading ? 'pl-[4.25rem]' : 'pl-9'), hasRight && 'pr-10', fieldBorder(!!error), inputClassName)} {...rest} />
+        {hasRight && (
+          <span className="absolute inset-y-0 right-2 flex items-center gap-1 text-muted">
+            {suffixText && <span className="pr-1 text-sm">{suffixText}</span>}
+            {trailing}
+            {isPassword && (
+              <button type="button" onClick={() => setReveal((v) => !v)} aria-label={reveal ? 'Ocultar contraseña' : 'Mostrar contraseña'} aria-pressed={reveal} className="flex size-7 items-center justify-center rounded-md transition-colors hover:bg-surface-3 hover:text-ink">{reveal ? <EyeOff className="size-4" /> : <Eye className="size-4" />}</button>
+            )}
+            {error && !isPassword && !trailing && !suffixText && <AlertCircle className="mr-1 size-4 text-danger" aria-hidden />}
+          </span>
+        )}
       </div>
+      {count && <p className="-mt-1 text-right text-[11px] tabular text-muted">{count}</p>}
     </FieldShell>
   )
 })
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> { label?: string; error?: string; hint?: string; options?: { value: string; label: string; disabled?: boolean }[]; placeholder?: string }
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({ label, error, hint, options, placeholder, className, required, id, children, ...rest }, ref) {
+interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> { label?: string; error?: string; hint?: string; showCount?: boolean }
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({ label, error, hint, showCount, className, required, id, ...rest }, ref) {
   const uid = useId(); const iid = id ?? uid
+  const count = showCount && rest.maxLength && typeof rest.value === 'string' ? `${rest.value.length}/${rest.maxLength}` : null
   return (
     <FieldShell label={label} error={error} hint={hint} required={required} htmlFor={iid} className={className}>
-      <div className="relative">
-        <select ref={ref} id={iid} aria-invalid={!!error} className={cx(base, 'h-10 appearance-none pr-9', error ? 'border-danger' : 'border-line-strong')} {...rest}>
-          {placeholder !== undefined && <option value="">{placeholder}</option>}
-          {options?.map((o) => <option key={o.value} value={o.value} disabled={o.disabled}>{o.label}</option>)}
-          {children}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
-      </div>
-    </FieldShell>
-  )
-})
-
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> { label?: string; error?: string; hint?: string }
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({ label, error, hint, className, required, id, ...rest }, ref) {
-  const uid = useId(); const iid = id ?? uid
-  return (
-    <FieldShell label={label} error={error} hint={hint} required={required} htmlFor={iid} className={className}>
-      <textarea ref={ref} id={iid} rows={3} className={cx(base, 'resize-none py-2.5', error ? 'border-danger' : 'border-line-strong')} {...rest} />
+      <textarea ref={ref} id={iid} rows={3} aria-invalid={!!error || undefined} className={cx(fieldBase, 'resize-none px-3 py-2.5', fieldBorder(!!error))} {...rest} />
+      {count && <p className="-mt-1 text-right text-[11px] tabular text-muted">{count}</p>}
     </FieldShell>
   )
 })
@@ -65,17 +67,12 @@ export function SearchInput({ value, onChange, placeholder = 'Buscar…', classN
   return (
     <div className={cx('relative', className)}>
       <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
-      <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} aria-label={placeholder} className={cx(base, 'h-10 border-line-strong pl-9 pr-9')} />
+      <input type="search" value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} aria-label={placeholder} className={cx(fieldBase, 'h-10 border-line-strong pl-9 pr-9 [&::-webkit-search-cancel-button]:hidden')} />
       {value && (
-        <button type="button" onClick={() => onChange('')} aria-label="Limpiar búsqueda" className="absolute right-2 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-md text-muted hover:bg-surface-3 hover:text-ink">
+        <button type="button" onClick={() => onChange('')} aria-label="Limpiar búsqueda" className="absolute right-2 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-md text-muted transition-colors hover:bg-surface-3 hover:text-ink">
           <X className="size-3.5" />
         </button>
       )}
     </div>
   )
 }
-
-/** DatePicker nativo accesible con el mismo lenguaje visual. */
-export const DateField = forwardRef<HTMLInputElement, Omit<InputProps, 'type'>>(function DateField(props, ref) {
-  return <Input ref={ref} type="date" {...props} />
-})

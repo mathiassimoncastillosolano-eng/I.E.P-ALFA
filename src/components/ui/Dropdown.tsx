@@ -9,7 +9,7 @@ export function Dropdown({ trigger, items, align = 'end', header, width = 'w-56'
     <D.Root>
       <D.Trigger asChild>{trigger}</D.Trigger>
       <D.Portal>
-        <D.Content align={align} sideOffset={8} className={cx('z-[60] overflow-hidden rounded-xl border border-line bg-surface p-1.5 shadow-pop data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95', width)}>
+        <D.Content align={align} sideOffset={8} className={cx('z-[60] overflow-hidden rounded-xl border border-line bg-surface p-1.5 shadow-pop data-[state=open]:animate-pop', width)}>
           {header && <div className="border-b border-line px-2.5 pb-2 pt-1.5">{header}</div>}
           <div className={header ? 'pt-1.5' : ''}>
             {items.map((it, i) => (

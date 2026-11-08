@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Avatar } from '@/components/ui/Avatar'
 import { ObligationBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
-import { DateField, Input, SearchInput, Select, Textarea } from '@/components/ui/Field'
+import { DateField, Input, SearchInput, Select, Textarea, fieldBase, fieldBorder } from '@/components/ui/Field'
 import { paymentSchema, type PaymentFormValues } from '@/schemas'
 import { enrollmentService } from '@/services/enrollmentService'
 import { financialService } from '@/services/financialService'
@@ -16,6 +16,7 @@ import { useDebounced } from '@/hooks/useDebounced'
 import { PAYMENT_METHOD_LABEL, SIM_TODAY } from '@/constants'
 import { fmtDate, money, round2 } from '@/utils/format'
 import { notify } from '@/utils/toast'
+import { cx } from '@/utils/cn'
 import type { StudentRow } from '@/types'
 
 export function PaymentForm({ initialEnrollmentId, initialStudentId, onDone }: { initialEnrollmentId?: string; initialStudentId?: string; onDone: () => void }) {
@@ -76,7 +77,7 @@ export function PaymentForm({ initialEnrollmentId, initialStudentId, onDone }: {
             <li key={o.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
               <div className="min-w-0 flex-1"><p className="text-[13px] font-medium">{o.label}</p><p className="text-xs text-muted">Vence {fmtDate(o.dueDate)} · Saldo <b className="text-ink">{money(o.balance)}</b></p></div>
               <ObligationBadge status={o.status} />
-              <div className="flex items-center gap-1.5"><input aria-label={`Importe para ${o.label}`} type="number" step="0.01" min={0} max={o.balance} value={alloc[o.id] ?? ''} placeholder="0.00" onChange={(e) => setOne(o.id, e.target.value, o.balance)} className="h-9 w-28 rounded-lg border border-line-strong bg-surface px-2.5 text-right text-sm tabular focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15" />
+              <div className="flex items-center gap-1.5"><input aria-label={`Importe para ${o.label}`} type="number" step="0.01" min={0} max={o.balance} value={alloc[o.id] ?? ''} placeholder="0.00" onChange={(e) => setOne(o.id, e.target.value, o.balance)} className={cx(fieldBase, fieldBorder(false), "h-9 w-28 rounded-lg px-2.5 text-right tabular")} />
                 <button type="button" onClick={() => setOne(o.id, String(o.balance), o.balance)} className="rounded-md px-2 py-1 text-xs font-medium text-primary hover:bg-primary-soft">Total</button></div>
             </li>))}</ul>)}
         <div className="flex items-center justify-between rounded-xl bg-surface-2 px-4 py-3"><span className="text-sm text-muted">Total del pago</span><span className="text-xl font-semibold tabular">{money(total)}</span></div>

@@ -33,7 +33,7 @@ export function AppLayout() {
                 <motion.aside initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', stiffness: 380, damping: 40 }} className="fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col bg-sidebar text-white shadow-pop">
                   <Dialog.Title className="sr-only">Menú de navegación</Dialog.Title>
                   <Dialog.Description className="sr-only">Navegación principal del sistema</Dialog.Description>
-                  <div className="flex h-16 items-center gap-3 px-4"><Escudo size={40} /><div className="leading-tight"><p className="text-[15px] font-semibold">I.E.P. ALFA</p><p className="text-[11px] text-[var(--sidebar-muted)]">Gestión escolar</p></div></div>
+                  <div className="flex h-16 items-center gap-3 px-4"><Escudo glow size={44} /><div className="leading-tight"><p className="text-[15px] font-semibold">I.E.P. ALFA</p><p className="text-[11px] text-[var(--sidebar-muted)]">Gestión escolar</p></div></div>
                   <SidebarContent collapsed={false} onNavigate={() => setMobile(false)} />
                 </motion.aside>
               </Dialog.Content>

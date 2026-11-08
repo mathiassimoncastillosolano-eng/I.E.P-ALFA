@@ -30,7 +30,7 @@ export default function LoginPage() {
       <section className="hero-surface relative hidden flex-col justify-between overflow-hidden p-12 text-white lg:flex">
         <div className="pointer-events-none absolute -right-24 -top-24 size-96 rounded-full border border-white/10" />
         <div className="pointer-events-none absolute -bottom-32 -left-16 size-[28rem] rounded-full border border-white/10" />
-        <div className="relative flex items-center gap-3"><Escudo size={52} /><div className="leading-tight"><p className="text-lg font-semibold tracking-tight">I.E.P. ALFA</p><p className="text-xs text-white/60">Institución Educativa Particular · Perú</p></div></div>
+        <div className="relative flex items-center gap-3"><Escudo glow size={60} /><div className="leading-tight"><p className="text-lg font-semibold tracking-tight">I.E.P. ALFA</p><p className="text-xs text-white/60">Institución Educativa Particular · Perú</p></div></div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative max-w-lg">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Sistema de gestión escolar</p>
           <h1 className="text-[44px] font-semibold leading-[1.05] tracking-tight">Toda la gestión académica y económica, en un solo lugar.</h1>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Avatar } from '@/components/ui/Avatar'
 import { IconButton } from '@/components/ui/Button'
 import { Dropdown } from '@/components/ui/Dropdown'
+import { Select } from '@/components/ui/Select'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 import { Badge } from '@/components/ui/Badge'
 import { Modal } from '@/components/ui/Modal'
@@ -50,14 +51,9 @@ export function Header({ onMenu }: { onMenu: () => void }) {
       </button>
       <IconButton label="Buscar" className="lg:hidden" onClick={() => setSearchOpen(true)}><Search /></IconButton>
 
-      <div className="relative hidden sm:block">
-        <CalendarRange className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-primary" />
-        <select aria-label="Año académico" value={yearId} onChange={(e) => { setYear(e.target.value); notify.info(`Año académico ${years.data?.find((y) => y.id === e.target.value)?.year}`) }}
-          className="h-9 appearance-none rounded-[10px] border border-line-strong bg-surface pl-8 pr-8 text-[13px] font-medium text-ink hover:border-primary/40">
-          {years.data?.map((y) => <option key={y.id} value={y.id}>{y.year}{y.status === 'activo' ? ' · activo' : y.status === 'planificado' ? ' · plan.' : ''}</option>)}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted" />
-      </div>
+      <Select aria-label="Año académico" className="hidden w-44 sm:block" triggerClassName="h-9 text-[13px] font-medium" leading={<CalendarRange className="text-primary" />} value={yearId}
+        onChange={(e) => { setYear(e.target.value); notify.info(`Año académico ${years.data?.find((y) => y.id === e.target.value)?.year}`) }}
+        options={years.data?.map((y) => ({ value: y.id, label: `${y.year}${y.status === 'activo' ? ' · activo' : y.status === 'planificado' ? ' · plan.' : ''}` })) ?? []} />
 
       <IconButton label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'} onClick={toggleTheme}>{theme === 'dark' ? <Sun /> : <Moon />}</IconButton>
 
@@ -68,7 +64,7 @@ export function Header({ onMenu }: { onMenu: () => void }) {
           </button>
         </Popover.Trigger>
         <Popover.Portal>
-          <Popover.Content align="end" sideOffset={8} className="z-[60] w-[340px] overflow-hidden rounded-xl border border-line bg-surface shadow-pop data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95">
+          <Popover.Content align="end" sideOffset={8} className="z-[60] w-[340px] overflow-hidden rounded-xl border border-line bg-surface shadow-pop data-[state=open]:animate-pop">
             <div className="flex items-center justify-between border-b border-line px-4 py-3"><p className="text-sm font-semibold">Notificaciones</p><Badge tone="primary" dot={false}>{nAlerts}</Badge></div>
             <div className="max-h-80 overflow-y-auto p-1.5">
               {alerts.data?.alerts.map((a) => (

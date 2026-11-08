@@ -26,8 +26,8 @@ export function GlobalSearch({ open, onOpenChange }: { open: boolean; onOpenChan
   return (
     <Dialog.Root open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) setQ('') }}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-[#0a1130]/50 backdrop-blur-[3px] data-[state=open]:animate-in data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed left-1/2 top-[12%] z-50 w-[92vw] max-w-xl -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-surface shadow-pop data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95">
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-[#0a1130]/50 backdrop-blur-[3px] data-[state=open]:animate-fade" />
+        <Dialog.Content className="fixed left-1/2 top-[12%] z-50 w-[92vw] max-w-xl -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-surface shadow-pop data-[state=open]:animate-pop">
           <Dialog.Title className="sr-only">Búsqueda global</Dialog.Title>
           <Dialog.Description className="sr-only">Busque estudiantes por nombre, DNI o código, o salte a una página.</Dialog.Description>
           <div className="flex items-center gap-3 border-b border-line px-4">

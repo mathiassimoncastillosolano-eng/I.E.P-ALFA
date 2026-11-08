@@ -2,7 +2,7 @@ import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { Loader2 } from 'lucide-react'
 import { cx } from '@/utils/cn'
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'subtle'
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'subtle' | 'success' | 'text'
 type Size = 'sm' | 'md' | 'lg'
 
 const variants: Record<Variant, string> = {
@@ -11,6 +11,9 @@ const variants: Record<Variant, string> = {
   ghost: 'text-ink-2 hover:bg-surface-3 hover:text-ink',
   subtle: 'bg-primary-soft text-primary hover:brightness-95',
   danger: 'bg-danger text-white shadow-soft hover:brightness-110 active:brightness-95',
+  success: 'bg-success text-white shadow-soft hover:brightness-110 active:brightness-95',
+  outline: 'border border-primary/40 bg-transparent text-primary hover:border-primary hover:bg-primary-soft',
+  text: 'h-auto px-1 text-primary underline-offset-4 hover:underline',
 }
 const sizes: Record<Size, string> = {
   sm: 'h-8 px-3 text-[13px] gap-1.5 rounded-md',
@@ -31,8 +34,8 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
 ) {
   return (
     <button
-      ref={ref} type={type} disabled={disabled || loading}
-      className={cx('group inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap font-medium transition-all duration-150 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50', variants[variant], sizes[size], className)}
+      ref={ref} type={type} disabled={disabled || loading} aria-busy={loading || undefined}
+      className={cx('group inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50', variants[variant], sizes[size], className)}
       {...rest}
     >
       {loading ? <Loader2 className="size-4 animate-spin" /> : icon && <span className="transition-transform group-hover:scale-110 [&>svg]:size-4">{icon}</span>}
@@ -48,7 +51,7 @@ export const IconButton = forwardRef<HTMLButtonElement, Omit<Props, 'icon' | 'ic
   return (
     <button
       ref={ref} type="button" aria-label={label} title={label}
-      className={cx('inline-flex shrink-0 items-center justify-center rounded-[10px] transition-all duration-150 active:scale-95 disabled:opacity-50 [&>svg]:size-4', size === 'sm' ? 'size-8' : 'size-9', variants[variant], className)}
+      className={cx('inline-flex shrink-0 items-center justify-center rounded-[10px] transition-all duration-150 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 active:scale-95 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4', size === 'sm' ? 'size-8' : 'size-9', variants[variant], className)}
       {...rest}
     >{children}</button>
   )

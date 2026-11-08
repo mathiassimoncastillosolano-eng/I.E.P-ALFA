@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { IconButton } from './Button'
+import { Select } from './Select'
 
 export function Pagination({ page, pageCount, total, pageSize, onPage, onPageSize }: { page: number; pageCount: number; total: number; pageSize: number; onPage: (p: number) => void; onPageSize?: (n: number) => void }) {
   const from = total === 0 ? 0 : page * pageSize + 1
@@ -9,9 +10,7 @@ export function Pagination({ page, pageCount, total, pageSize, onPage, onPageSiz
       <div className="flex items-center gap-3">
         <span className="tabular">Mostrando <b className="font-semibold text-ink">{from}–{to}</b> de <b className="font-semibold text-ink">{total}</b></span>
         {onPageSize && (
-          <select aria-label="Filas por página" value={pageSize} onChange={(e) => onPageSize(Number(e.target.value))} className="h-8 rounded-md border border-line-strong bg-surface px-2 text-xs text-ink">
-            {[10, 20, 50].map((n) => <option key={n} value={n}>{n} / pág.</option>)}
-          </select>
+          <Select aria-label="Filas por página" size="sm" value={String(pageSize)} onChange={(e) => onPageSize(Number(e.target.value))} options={[10, 20, 50].map((n) => ({ value: String(n), label: `${n} / pág.` }))} className="w-28" />
         )}
       </div>
       <div className="flex items-center gap-1">

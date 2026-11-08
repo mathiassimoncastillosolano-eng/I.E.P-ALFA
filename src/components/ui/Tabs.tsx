@@ -10,10 +10,10 @@ export function Tabs<T extends string>({ value, onChange, tabs, className }: { v
         const active = t.id === value
         return (
           <button key={t.id} role="tab" aria-selected={active} onClick={() => onChange(t.id)}
-            className={cx('relative flex shrink-0 items-center gap-2 px-3.5 py-2.5 text-[13px] font-medium transition-colors [&>svg]:size-4', active ? 'text-primary' : 'text-muted hover:text-ink')}>
+            className={cx('relative flex shrink-0 items-center gap-2 rounded-t-lg px-3.5 py-2.5 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 [&>svg]:size-4', active ? 'text-primary' : 'text-muted hover:bg-surface-3/60 hover:text-ink')}>
             {t.icon}{t.label}
             {t.count !== undefined && <span className={cx('rounded-full px-1.5 text-[11px] font-semibold tabular', active ? 'bg-primary-soft text-primary' : 'bg-surface-3 text-muted')}>{t.count}</span>}
-            {active && <motion.span layoutId={`tab-${id}`} className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" transition={{ type: 'spring', stiffness: 500, damping: 40 }} />}
+            {active && <motion.span layoutId={`tab-${id}`} className="absolute inset-x-2 -bottom-px h-[3px] rounded-t-full bg-gradient-to-r from-primary to-accent" transition={{ type: 'spring', stiffness: 500, damping: 40 }} />}
           </button>
         )
       })}

@@ -34,7 +34,7 @@ export default function SettingsPage() {
     <>
       <PageHeader eyebrow="Administración" title="Configuración institucional" description="Datos de la institución y gestión de los datos de demostración." />
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2"><CardHeader title="Datos de la institución" action={<Escudo size={44} className="!border-0 !bg-primary" />} />
+        <Card className="lg:col-span-2"><CardHeader title="Datos de la institución" action={<Escudo size={44} />} />
           <form onSubmit={save} className="grid gap-4 px-5 pb-5 sm:grid-cols-2">
             <Input label="Nombre institucional" className="sm:col-span-2" disabled={ro} {...register('name')} /><Input label="Nombre corto" disabled={ro} {...register('shortName')} /><Input label="UGEL" disabled={ro} {...register('ugel')} />
             <Input label="Dirección" className="sm:col-span-2" disabled={ro} {...register('address')} /><Input label="Teléfono" disabled={ro} {...register('phone')} /><Input label="Correo" disabled={ro} {...register('email')} /><Input label="Director(a)" className="sm:col-span-2" disabled={ro} {...register('director')} />

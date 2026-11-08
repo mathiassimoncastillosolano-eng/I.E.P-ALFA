@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import { cx } from '@/utils/cn'
 
 export function Card({ className, hover, ...rest }: HTMLAttributes<HTMLDivElement> & { hover?: boolean }) {
-  return <div className={cx('rounded-[14px] border border-line bg-surface shadow-soft', hover && 'transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card hover:border-line-strong', className)} {...rest} />
+  return <div className={cx('rounded-[16px] border border-line bg-surface shadow-soft', hover && 'transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card hover:border-primary/25', className)} {...rest} />
 }
 export function CardHeader({ title, description, action, className }: { title: ReactNode; description?: ReactNode; action?: ReactNode; className?: string }) {
   return (
@@ -13,5 +13,5 @@ export function CardHeader({ title, description, action, className }: { title: R
   )
 }
 export const SectionTitle = ({ children, icon }: { children: ReactNode; icon?: ReactNode }) => (
-  <div className="mb-4 flex items-center gap-2 border-b border-line pb-3 text-[13px] font-semibold uppercase tracking-wider text-ink-2 [&>svg]:size-4 [&>svg]:text-primary">{icon}{children}</div>
+  <div className="mb-4 flex items-center gap-2 border-b border-line pb-3 text-[12.5px] font-semibold uppercase tracking-[0.12em] text-ink-2 [&>svg]:size-4 [&>svg]:text-primary">{icon}{children}</div>
 )

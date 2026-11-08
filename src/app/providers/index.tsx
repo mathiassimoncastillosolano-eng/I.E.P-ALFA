@@ -11,7 +11,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <MotionConfig reducedMotion="user">
       <TooltipProvider>
         {children}
-        <Toaster position="top-right" theme={theme} richColors closeButton toastOptions={{ style: { borderRadius: 12, fontFamily: 'inherit' } }} />
+        <Toaster position="top-right" theme={theme} richColors closeButton toastOptions={{ style: { borderRadius: 14, fontFamily: 'inherit', boxShadow: 'var(--shadow-lg)' } }} />
       </TooltipProvider>
     </MotionConfig>
   )

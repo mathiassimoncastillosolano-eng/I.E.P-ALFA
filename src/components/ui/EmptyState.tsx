@@ -5,8 +5,8 @@ import { Button } from './Button'
 export function EmptyState({ title, description, icon, action }: { title: string; description?: string; icon?: ReactNode; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center px-6 py-14 text-center">
-      <div className="relative mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary-soft text-primary [&>svg]:size-6">
-        <span className="absolute -right-1 -top-1 size-3 rounded-full bg-danger/80" />
+      <div className="relative mb-4 flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-soft to-accent-soft text-primary ring-1 ring-inset ring-primary/10 [&>svg]:size-7">
+        <span aria-hidden className="absolute -right-1 -top-1 size-3 rounded-full bg-[var(--brand-red)] ring-2 ring-surface" />
         {icon ?? <Inbox />}
       </div>
       <h4 className="text-[15px] font-semibold text-ink">{title}</h4>

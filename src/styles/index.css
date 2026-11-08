@@ -46,6 +46,18 @@
   --chart-3: #d92735;
   --chart-4: #7aa2e8;
   --chart-5: #94a3bd;
+  /* Tokens de sistema de diseño */
+  --radius-field: 10px;
+  --radius-panel: 12px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --z-sticky: 20;
+  --z-sidebar: 30;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-floating: 80;
   color-scheme: light;
 }
 
@@ -125,6 +137,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 * { border-color: var(--border); }
+body { background-image: radial-gradient(1000px 360px at 100% -10%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%); background-attachment: fixed; }
 ::selection { background: var(--primary-soft); color: var(--primary); }
 
 :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
@@ -153,6 +166,19 @@ body {
     radial-gradient(600px 260px at 0% 120%, rgba(217, 39, 53, 0.22), transparent 60%),
     linear-gradient(135deg, #173d91 0%, #0f2760 100%);
 }
+
+/* Apertura de paneles flotantes (select, calendario, menús, tooltips) */
+@keyframes pop-in { from { opacity: 0; transform: translateY(-4px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-fade { animation: fade-in var(--dur-base) ease-out both; }
+.animate-pop { animation: pop-in var(--dur-fast) var(--ease-out) both; }
+
+/* Campos numéricos: sin spinners nativos (mantienen teclado y rueda) */
+input[type='number'] { appearance: textfield; -moz-appearance: textfield; }
+input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button { appearance: none; -webkit-appearance: none; margin: 0; }
+
+/* Autocompletado del navegador integrado con la superficie */
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px var(--surface) inset; -webkit-text-fill-color: var(--text); }
 
 @media print {
   aside, header, .no-print { display: none !important; }

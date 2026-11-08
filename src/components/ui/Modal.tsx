@@ -22,15 +22,15 @@ export function Modal({ open, onOpenChange, title, description, children, footer
                 <motion.div
                   initial={{ opacity: 0, scale: 0.96, y: 16 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97, y: 8 }}
                   transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                  className={cx('flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[20px] border border-line bg-surface shadow-pop sm:rounded-[20px]', widths[size])}
+                  className={cx('flex max-h-[92dvh] w-full flex-col rounded-t-[20px] border border-line bg-surface shadow-pop sm:rounded-[20px]', widths[size])}
                 >
-                  <div className="flex items-start justify-between gap-4 border-b border-line px-6 py-4">
+                  <div className="flex items-start justify-between gap-4 rounded-t-[19px] border-b border-line bg-gradient-to-b from-surface-2/70 to-surface px-6 py-4">
                     <div><Dialog.Title className="text-base font-semibold tracking-tight text-ink">{title}</Dialog.Title>
                       <Dialog.Description className={description ? 'mt-0.5 text-[13px] text-muted' : 'sr-only'}>{description ?? title}</Dialog.Description></div>
                     <Dialog.Close asChild><IconButton label="Cerrar" size="sm"><X /></IconButton></Dialog.Close>
                   </div>
                   <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">{children}</div>
-                  {footer && <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line bg-surface-2 px-6 py-3.5">{footer}</div>}
+                  {footer && <div className="flex flex-wrap items-center justify-end gap-2 rounded-b-[19px] border-t border-line bg-surface-2 px-6 py-3.5 max-sm:rounded-b-none">{footer}</div>}
                 </motion.div>
               </Dialog.Content>
             </div>

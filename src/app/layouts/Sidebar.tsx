@@ -35,8 +35,8 @@ export function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; 
                     const link = (
                       <NavLink to={it.to} onClick={onNavigate} aria-current={active ? 'page' : undefined}
                         className={cx('group relative flex h-10 items-center gap-3 rounded-[10px] px-3 text-[13.5px] font-medium transition-colors', active ? 'text-white' : 'text-[var(--sidebar-fg)] hover:bg-white/5 hover:text-white', collapsed && 'justify-center px-0')}>
-                        {active && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-[10px] bg-[var(--sidebar-active)] ring-1 ring-white/10" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
-                        {active && <motion.span layoutId="nav-bar" className="absolute -left-3 top-2 h-6 w-1 rounded-r-full bg-[var(--brand-red)]" />}
+                        {active && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-[10px] bg-gradient-to-r from-white/[0.14] to-white/[0.05] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-white/10" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
+                        {active && <motion.span layoutId="nav-bar" className="absolute -left-3 top-2 h-6 w-1 rounded-r-full bg-[var(--brand-red)] shadow-[0_0_10px_rgba(217,39,53,0.7)]" />}
                         <Icon className={cx('relative size-[18px] shrink-0 transition-transform group-hover:scale-110', active && 'text-white')} />
                         {!collapsed && <span className="relative truncate">{it.label}</span>}
                       </NavLink>
@@ -59,12 +59,12 @@ export function Sidebar() {
     <motion.aside animate={{ width: collapsed ? 76 : 268 }} transition={{ type: 'spring', stiffness: 380, damping: 38 }}
       className="relative z-30 hidden h-dvh shrink-0 flex-col bg-sidebar text-white lg:flex">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(400px_220px_at_0%_0%,rgba(22,138,196,0.22),transparent_70%)]" />
-      <div className={cx('relative flex h-16 shrink-0 items-center gap-3 px-4', collapsed && 'justify-center px-0')}>
-        <Escudo size={collapsed ? 36 : 40} />
+      <div className={cx('relative flex h-[72px] shrink-0 items-center gap-3 border-b border-white/5 px-4', collapsed && 'justify-center px-0')}>
+        <Escudo glow size={collapsed ? 40 : 46} />
         {!collapsed && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-w-0 leading-tight">
-            <p className="truncate text-[15px] font-semibold tracking-tight">I.E.P. ALFA</p>
-            <p className="truncate text-[11px] text-[var(--sidebar-muted)]">Gestión escolar</p>
+            <p className="truncate text-[15px] font-bold leading-tight tracking-tight">I.E.P. ALFA</p>
+            <p className="truncate text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--sidebar-muted)]">Gestión escolar</p>
           </motion.div>
         )}
       </div>
