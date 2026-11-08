@@ -122,7 +122,7 @@ export function Calendar({ value, today, min, max, onSelect, onClear }: Calendar
 interface DateFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'min' | 'max' | 'value' | 'defaultValue'> {
   label?: string; error?: string; hint?: string
   /** Fechas en formato ISO `yyyy-MM-dd`. */
-  value?: string; defaultValue?: string; min?: string; max?: string
+  value?: string; defaultValue?: string; min?: string | number; max?: string | number
   clearable?: boolean
   size?: 'sm' | 'md'
   triggerClassName?: string
@@ -175,7 +175,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(function D
   }
   const blur = (e: FocusEvent<HTMLButtonElement>) => onBlur?.(e as unknown as FocusEvent<HTMLInputElement>)
   const today = toDate(SIM_TODAY) ?? new Date()
-  const minD = toDate(min), maxD = toDate(max)
+  const minD = toDate(min === undefined ? undefined : String(min)), maxD = toDate(max === undefined ? undefined : String(max))
   const canClear = !!clearable && !!date && !disabled
 
   return (
@@ -198,4 +198,3 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(function D
     </FieldShell>
   )
 })
-
